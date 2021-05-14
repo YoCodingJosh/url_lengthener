@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Josh's Really Cool URL Lengthener</title>
+    <script src="https://unpkg.com/base2048@1/dist/iife/base2048.js"></script>
+    <script src="./lib.js"></script>
+  </head>
+  <body>
+    <h1>Josh's Really Cool URL Lengthener</h1>
+    <hr>
+    <p>This will take a URL and make it really long.</p>
+    <p>PS: Sorry this site looks awful, I'm a developer not a designer. ;)</p>
+    <br/>
+    <div>
+      <label for="urlText">URL to lengthen: </label>
+      <input type="url" autocomplete="off" autocorrect="off" required name="urlText">
+    </div>
+  </body>
+</html>
+
+
+
+<p id="text"></p>
+<p id="decodedText"></p>
+<script>
+  var encodedValue = base2048.encode(stringToUint("something"));
+  var decodedValue = base2048.decode(encodedValue);
+
+  document.getElementById("text").innerHTML = encodedValue;
+  document.getElementById("decodedText").innerHTML = uintToString(decodedValue);
+</script>
