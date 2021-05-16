@@ -14,18 +14,9 @@
     <div>
       <label for="urlText">URL to lengthen: </label>
       <input type="url" autocomplete="off" autocorrect="off" required name="urlText">
+      <br/>
+      <label for="generatedUrl">Your nice and long URL: </label>
+      <input type="text" disabled="true" name="generatedUrl" id="generatedUrlTextBox">
     </div>
   </body>
 </html>
-
-
-
-<p id="text"></p>
-<p id="decodedText"></p>
-<script>
-  var encodedValue = base2048.encode(stringToUint("something"));
-  var decodedValue = base2048.decode(encodedValue);
-
-  document.getElementById("text").innerHTML = encodedValue;
-  document.getElementById("decodedText").innerHTML = uintToString(decodedValue);
-</script>

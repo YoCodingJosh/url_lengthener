@@ -1,21 +1,6 @@
 const MAGIC_NUMBER = 69;
 const APPLICATION_VERSION_IDENTIFIER = "1A";
 
-async function sha256(message) {
-  // encode as UTF-8
-  const msgBuffer = new TextEncoder().encode(message);                    
-
-  // hash the message
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-
-  // convert ArrayBuffer to Array
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-
-  // convert bytes to hex string                  
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  return hashHex;
-}
-
 function stringToUint(string) {
   var string = btoa(unescape(encodeURIComponent(string))),
     charList = string.split(''),
@@ -35,19 +20,18 @@ function uintToString(uintArray) {
   return decodedString;
 }
 
-async function buildPayloadString(url, verify) {
-  verify = (typeof verify !== 'undefined') ? verify : false;
-
+function buildPayloadString(url) {
   var obj = {};
 
   obj.magic_number = MAGIC_NUMBER;
   obj.application_version_identifier = APPLICATION_VERSION_IDENTIFIER;
   obj.uniform_resource_locator = url;
-  
-  if (!verify) {
-    var payloadString = await buildPayloadString(url, true);
-    obj.payload = payloadString;
-    obj.payload_hash = await sha256(payloadString);
+  obj.uniform_resource_locator_padding_length = 1024 - url.length - 3;
+  obj.uniform_resource_locator_padding_length = obj.uniform_resource_locator_padding_length <= 0 ? 3 : obj.uniform_resource_locator_padding_length;
+  obj.uniform_resource_locator_padding = "420";
+
+  for (var i = 0; i < obj.uniform_resource_locator_padding.length - 3; i++) {
+    obj.uniform_resource_locator_padding += Math.round(Math.random() * 10);
   }
 
   var json = JSON.stringify(obj);
@@ -57,11 +41,9 @@ async function buildPayloadString(url, verify) {
   return encodedJsonBytes;
 }
 
-async function getUrlFromPayload(payload) {
+function getUrlFromPayload(payload) {
   var decodedPayload = JSON.parse(uintToString(base2048.decode(payload)));
 
   var url = decodedPayload.url;
-  var payloadFromUrl = await buildPayloadString(url, true);
-
-  // if (obj.payload_hash != await.
+  var payloadFromUrl = buildPayloadString(url, true);
 }
